@@ -228,45 +228,125 @@ body {
   flex: 1;
   display: flex; flex-direction: column;
   padding: 13px 11px 10px;
+  position: relative;
+  overflow: hidden;
 }
 .p-label {
   font-size: 7.5px; font-weight: 800; letter-spacing: 1.8px;
   text-transform: uppercase; margin-bottom: 3px;
+  position: relative; z-index: 2;
+  display: none;
 }
 .tech-inner .p-label { color: #888; }
 .p-title {
   font-size: 16px; font-weight: 900; line-height: 1.1; margin-bottom: 10px;
+  position: relative; z-index: 2;
 }
-.tech-inner .p-title { color: var(--white); }
 
-.terminal {
-  background: #111; border-radius: 7px; flex: 1;
-  display: flex; flex-direction: column; border: 1px solid #2a2a2a;
+/* TECH title — putih bersih, bold, readable */
+.tech-inner .p-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px; font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  margin-bottom: 10px;
 }
-.term-bar {
-  background: #252525; padding: 6px 9px;
-  display: flex; gap: 5px; align-items: center;
+
+/* ART title — playful colorful */
+.art-inner .p-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px; font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  color: var(--black);
+  margin-bottom: 10px;
+  position: relative; z-index: 2;
 }
-.td { width: 8px; height: 8px; border-radius: 50%; }
-.td-r{background:#ff5f57;} .td-y{background:#febc2e;} .td-g{background:#28c840;}
-.term-body {
-  padding: 8px 10px; flex: 1;
-  font-family: 'Space Mono', monospace;
-  font-size: 8px; line-height: 1.85; overflow: hidden;
-  color: #d4d4d4;
-}
-.tg{color:#4ec9b0;} .ty{color:#dcdcaa;} .to{color:#ce9178;} .tp{color:#c586c0;}
-.tcursor {
-  display:inline-block; width:5px; height:10px;
-  background:#d4d4d4; animation:blink 1s infinite;
-  vertical-align:middle; border-radius:1px; margin-left:1px;
+.art-inner .p-title .w-art { color: #ff3366; }
+.art-inner .p-title .w-creative { color: #9b4fd0; }
+
+.circuit-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 .tech-cta {
   font-family:'Space Mono',monospace; font-size:7.5px;
   color:var(--yellow); text-align:right; padding-top:8px; letter-spacing:.4px;
+  position: relative; z-index: 2; margin-top: auto;
 }
+/* TECH TAGS — chip IC solid, punya kaki pin di kiri & kanan */
+.tech-tags {
+  display: flex; flex-wrap: wrap; gap: 10px 8px; margin-bottom: 8px;
+  position: relative; z-index: 10;
+}
+.tech-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 6.5px; font-weight: 700; letter-spacing: .3px;
+  padding: 3px 6px;
+  border-radius: 2px;
+  background: #0d1f30;
+  color: #ffffff;
+  text-transform: uppercase;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  position: relative;
+  margin-left: 6px; margin-right: 6px;
+  box-shadow: 0 0 0 1px #0d1f30, inset 0 1px 0 rgba(255,255,255,0.08);
+}
+/* kaki pin kiri */
+.tech-tag::before {
+  content: '';
+  position: absolute;
+  left: -6px; top: 50%; transform: translateY(-50%);
+  width: 5px; height: 2px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 0;
+}
+/* kaki pin kanan */
+.tech-tag::after {
+  content: '';
+  position: absolute;
+  right: -6px; top: 50%; transform: translateY(-50%);
+  width: 5px; height: 2px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 0;
+}
+/* notch pin marker di sudut kiri atas (tanda pin 1 IC) */
+.tech-tag .chip-dot {
+  display: inline-block;
+  width: 3px; height: 3px; border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+  margin-right: 4px;
+  vertical-align: middle;
+  position: relative; top: -0.5px;
+}
+.tech-tag.t-iot   { border-color: rgba(0,255,136,0.6); color: #00ff88; }
+.tech-tag.t-iot::before, .tech-tag.t-iot::after { background: rgba(0,255,136,0.5); }
+.tech-tag.t-ml    { border-color: rgba(251,198,5,0.6); color: #FBC605; }
+.tech-tag.t-ml::before, .tech-tag.t-ml::after { background: rgba(251,198,5,0.5); }
+.tech-tag.t-cv    { border-color: rgba(0,238,255,0.6); color: #00eeff; }
+.tech-tag.t-cv::before, .tech-tag.t-cv::after { background: rgba(0,238,255,0.5); }
 
-/* ART */
+/* ART TAGS — playful, warna solid, rapi */
+.art-tags {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; position: relative; z-index: 2;
+}
+.art-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 7.5px; font-weight: 800; letter-spacing: .2px;
+  padding: 3px 9px;
+  border-radius: 100px;
+  color: #ffffff;
+  text-transform: uppercase;
+  border: none;
+}
+.art-tag.tag-illus { background: #ff3366; }
+.art-tag.tag-tween { background: #9b4fd0; }
+.art-tag.tag-3d    { background: #0096c7; }
 .art-inner {
   background: var(--white);
   flex: 1;
@@ -276,10 +356,10 @@ body {
   overflow: hidden;
 }
 .art-inner .p-label { color: rgba(0,0,0,.4); }
-.art-inner .p-title { color: var(--black); position: relative; z-index: 2; }
-.art-sketch-canvas {
+.paint-canvas {
   position: absolute;
   inset: 0;
+  width: 100%; height: 100%;
   z-index: 0;
   pointer-events: none;
 }
@@ -291,17 +371,6 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 15px;
   z-index: 2;
-}
-.art-tags {
-  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; position: relative; z-index: 2;
-}
-.art-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 7px; font-weight: 700;
-  padding: 3px 8px; border-radius: 100px;
-  border: 1.5px solid var(--black);
-  background: rgba(251,198,5,0.18);
-  color: var(--black);
 }
 .art-visual {
   flex: 1; border-radius: 9px;
@@ -420,15 +489,14 @@ body {
       <!-- TECH -->
       <div class="portal-card" onclick="location.href='#tech'">
         <div class="tech-inner">
-          <div class="p-label">01 / TECH</div>
+          <canvas class="circuit-canvas" id="circuitCanvas"></canvas>
           <div class="p-title">TECH &amp;<br>RESEARCH</div>
-          <div class="terminal">
-            <div class="term-bar">
-              <div class="td td-r"></div>
-              <div class="td td-y"></div>
-              <div class="td td-g"></div>
-            </div>
-            <div class="term-body" id="term"></div>
+          <div class="tech-tags">
+            <span class="tech-tag t-iot"><span class="chip-dot"></span>IoT</span>
+            <span class="tech-tag"><span class="chip-dot"></span>Embedded</span>
+            <span class="tech-tag t-ml"><span class="chip-dot"></span>ML</span>
+            <span class="tech-tag"><span class="chip-dot"></span>Web Dev</span>
+            <span class="tech-tag t-cv"><span class="chip-dot"></span>Comp.Vision</span>
           </div>
           <div class="tech-cta">&gt; EXPLORE.sh →</div>
         </div>
@@ -437,14 +505,12 @@ body {
       <!-- ART -->
       <div class="portal-card" onclick="location.href='#art'">
         <div class="art-inner">
-          <canvas class="art-sketch-canvas" id="sketchCanvas"></canvas>
-          <div class="p-label">02 / ART</div>
-          <div class="p-title">ART &amp;<br>CREATIVE</div>
-          <div class="art-icon-box">✏️</div>
+          <canvas class="paint-canvas" id="paintCanvas"></canvas>
+          <div class="p-title"><span class="w-art">ART</span> &amp;<br><span class="w-creative">CREATIVE</span></div>
           <div class="art-tags">
-            <span class="art-tag">Illustration</span>
-            <span class="art-tag">Tweening</span>
-            <span class="art-tag">3D</span>
+            <span class="art-tag tag-illus">Illustration</span>
+            <span class="art-tag tag-tween">Tweening</span>
+            <span class="art-tag tag-3d">3D</span>
           </div>
           <div class="art-visual">
             <!-- <img src="YOUR_CLOUDINARY_GIF_URL" alt="art"> -->
@@ -453,7 +519,6 @@ body {
               <small>your art<br>GIF here</small>
             </div>
           </div>
-          <div class="art-cta">EXPLORE →</div>
         </div>
       </div>
 
@@ -823,152 +888,401 @@ setTimeout(typeRole, 700);
 })();
 
 
-/* TERMINAL */
-const termEl = document.getElementById('term');
-const skills = ['Embedded Systems','IoT','Machine Learning','Web Dev','Computer Vision'];
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
+/* ══════════════════════════════
+   CIRCUIT BOARD — card tech
+   pulse kena chip → chip glow + burst menyebar
+   ══════════════════════════════ */
+(function(){
+  const cv = document.getElementById('circuitCanvas');
+  if(!cv) return;
+  const cx = cv.getContext('2d');
+  function r(a,b){ return a+Math.random()*(b-a); }
+  const GRID=10, TRACE_H='#00ff88', ACCENT='#FBC605', ACCENT2='#00eeff';
+  let traces=[], nodes=[], pulses=[], chipRects=[], particles=[], chipGlows=[];
 
-async function runTerm(){
-  while(true){
-    const cmd='print(tech_skills)';
-    let t='';
-    for(const ch of cmd){
-      t+=ch;
-      const c=t.replace('print','<span class="tg">print</span>').replace('tech_skills','<span class="ty">tech_skills</span>');
-      termEl.innerHTML='<span class="tg">></span> '+c+'<span class="tcursor"></span>';
-      await sleep(48);
-    }
-    await sleep(380);
-    const sp=['|','/','—','\\'];
-    for(let i=0;i<10;i++){
-      termEl.innerHTML='<span class="tg">></span> <span class="tg">print</span>(<span class="ty">tech_skills</span>)<br>'+sp[i%4]+'<span class="tcursor"></span>';
-      await sleep(85);
-    }
-    let out='<span class="tg">></span> <span class="tg">print</span>(<span class="ty">tech_skills</span>)<br>';
-    for(const s of skills){
-      out+='<span class="to">- '+s+'</span><br>';
-      termEl.innerHTML=out; await sleep(170);
-    }
-    await sleep(2200);
-    let clr='';
-    for(const ch of 'clear'){
-      clr+=ch;
-      termEl.innerHTML=out+'<span class="tg">></span> <span class="tp">'+clr+'</span><span class="tcursor"></span>';
-      await sleep(80);
-    }
-    await sleep(200);
-    termEl.innerHTML='';
-    await sleep(300);
+  function updateChipRects(){
+    chipRects=[];
+    const tags = cv.parentElement.querySelectorAll('.tech-tag');
+    const cvRect = cv.getBoundingClientRect();
+    tags.forEach((tag,idx)=>{
+      const tr = tag.getBoundingClientRect();
+      chipRects.push({
+        x: tr.left - cvRect.left - 3,
+        y: tr.top  - cvRect.top  - 3,
+        w: tr.width  + 6,
+        h: tr.height + 6,
+        idx,
+        glowT: 0  // countdown glow setelah kena pulse
+      });
+    });
   }
-}
-/* SKETCH CANVAS */
-const sketchEl = document.getElementById('sketchCanvas');
-const sCtx = sketchEl.getContext('2d');
 
-function resizeSketch(){
-  const p = sketchEl.parentElement;
-  sketchEl.width = p.offsetWidth;
-  sketchEl.height = p.offsetHeight;
-}
-resizeSketch();
-window.addEventListener('resize', resizeSketch);
-
-function rand(a,b){ return a + Math.random()*(b-a); }
-
-const strokeColors = ['#1a1a1a','#FBC605','#e03535','#2196F3','#28c840','#FF6B35','#9B59B6','#00BCD4','#FF69B4','#FF9800'];
-
-function newStroke(){
-  const w = sketchEl.width, h = sketchEl.height;
-  // Start from a random edge, end at opposite side — so it always crosses fully
-  const side = Math.floor(Math.random()*4);
-  let sx, sy, ex, ey;
-  const pad = -20; // start/end outside card bounds
-  if(side === 0){ // top → bottom
-    sx = rand(pad, w-pad); sy = pad;
-    ex = rand(pad, w-pad); ey = h-pad;
-  } else if(side === 1){ // left → right
-    sx = pad; sy = rand(pad, h-pad);
-    ex = w-pad; ey = rand(pad, h-pad);
-  } else if(side === 2){ // diagonal TL → BR
-    sx = pad; sy = pad;
-    ex = w-pad; ey = h-pad;
-  } else { // diagonal TR → BL
-    sx = w-pad; sy = pad;
-    ex = pad; ey = h-pad;
+  function pointInChip(px,py){
+    return chipRects.findIndex(c=> px>=c.x && px<=c.x+c.w && py>=c.y && py<=c.y+c.h);
   }
-  // slight curve control point
-  const cpx = (sx+ex)/2 + rand(-30, 30);
-  const cpy = (sy+ey)/2 + rand(-30, 30);
-  return {
-    sx, sy, cpx, cpy, ex, ey,
-    color: strokeColors[Math.floor(Math.random()*strokeColors.length)],
-    width: rand(22, 38),
-    head: 0,
-    tail: 0,
-    speed: rand(0.008, 0.018),
-    phase: 'draw',
-    holdTimer: 0,
-    holdMax: Math.floor(rand(30, 80)),
-  };
-}
 
-function bezier(sx,sy,cpx,cpy,ex,ey,t){
-  const mt = 1-t;
-  return {
-    x: mt*mt*sx + 2*mt*t*cpx + t*t*ex,
-    y: mt*mt*sy + 2*mt*t*cpy + t*t*ey
-  };
-}
+  function spawnBurst(chip, hitX, hitY, color){
+    // chip nyala
+    chip.glowT = 45;
+    chip.glowColor = color;
 
-function drawSegment(s, t0, t1){
-  const steps = 20;
-  sCtx.beginPath();
-  const p0 = bezier(s.sx,s.sy,s.cpx,s.cpy,s.ex,s.ey, t0);
-  sCtx.moveTo(p0.x, p0.y);
-  for(let i=1;i<=steps;i++){
-    const t = t0 + (t1-t0)*(i/steps);
-    const p = bezier(s.sx,s.sy,s.cpx,s.cpy,s.ex,s.ey, t);
-    sCtx.lineTo(p.x, p.y);
-  }
-  sCtx.strokeStyle = s.color;
-  sCtx.globalAlpha = 0.45;
-  sCtx.lineWidth = s.width;
-  sCtx.lineCap = 'square';
-  sCtx.lineJoin = 'miter';
-  sCtx.stroke();
-  sCtx.globalAlpha = 1;
-}
-
-const strokes = [];
-for(let i=0;i<4;i++){
-  const s = newStroke();
-  s.head = rand(0, 0.6);
-  if(Math.random()<0.3){ s.phase='hold'; s.holdTimer=Math.floor(rand(0,s.holdMax)); }
-  strokes.push(s);
-}
-
-function drawSketch(){
-  sCtx.clearRect(0,0,sketchEl.width,sketchEl.height);
-  for(const s of strokes){
-    if(s.phase === 'draw'){
-      s.head = Math.min(1, s.head + s.speed);
-      if(s.head >= 1){ s.phase = 'hold'; s.holdTimer = 0; }
-      drawSegment(s, s.tail, s.head);
-    } else if(s.phase === 'hold'){
-      s.holdTimer++;
-      drawSegment(s, s.tail, s.head);
-      if(s.holdTimer >= s.holdMax) s.phase = 'erase';
-    } else if(s.phase === 'erase'){
-      s.tail = Math.min(1, s.tail + s.speed * 1.3);
-      if(s.tail < s.head) drawSegment(s, s.tail, s.head);
-      if(s.tail >= s.head) Object.assign(s, newStroke());
+    // burst partikel menyebar dari SEMUA sisi chip
+    const cx2=chip.x+chip.w/2, cy2=chip.y+chip.h/2;
+    const count = 22;
+    for(let i=0;i<count;i++){
+      const ang = (i/count)*Math.PI*2;
+      const spd = r(1.2, 3.8);
+      particles.push({
+        x: hitX, y: hitY,
+        // arah dari titik tumbukan ke luar radial
+        vx: Math.cos(ang)*spd + r(-0.4,0.4),
+        vy: Math.sin(ang)*spd + r(-0.4,0.4),
+        color,
+        life: Math.floor(r(18,36)),
+        maxLife: 36,
+        sz: r(1, 2.5),
+        trail: []
+      });
+    }
+    // tambahan: partikel "keluar dari pin" kiri & kanan chip
+    const pinY = chip.y + chip.h/2;
+    for(let s=-1;s<=1;s+=2){
+      for(let j=0;j<5;j++){
+        particles.push({
+          x: s>0 ? chip.x+chip.w : chip.x,
+          y: pinY + r(-4,4),
+          vx: s * r(1.5,4),
+          vy: r(-1,1),
+          color: s>0 ? ACCENT : ACCENT2,
+          life: Math.floor(r(14,28)), maxLife:28,
+          sz: r(1,2), trail:[]
+        });
+      }
     }
   }
-  requestAnimationFrame(drawSketch);
-}
-drawSketch();
 
-runTerm();
+  function init(){
+    const W=cv.width, H=cv.height;
+    if(!W||!H) return;
+    traces=[]; nodes=[]; pulses=[]; particles=[];
+    updateChipRects();
+    const GX=Math.ceil(W/GRID)+1, GY=Math.ceil(H/GRID)+1;
+    for(let i=0;i<28;i++){
+      if(Math.random()<0.5){
+        const gy=Math.floor(r(1,GY-1));
+        const gx1=Math.floor(r(0,GX*0.4)), gx2=Math.floor(r(GX*0.6,GX));
+        traces.push({x1:gx1*GRID,y1:gy*GRID,x2:gx2*GRID,y2:gy*GRID,horiz:true,t:r(0,Math.PI*2),
+          color:Math.random()<0.15?ACCENT2:TRACE_H});
+      } else {
+        const gx=Math.floor(r(1,GX-1));
+        const gy1=Math.floor(r(0,GY*0.4)), gy2=Math.floor(r(GY*0.6,GY));
+        traces.push({x1:gx*GRID,y1:gy1*GRID,x2:gx*GRID,y2:gy2*GRID,horiz:false,t:r(0,Math.PI*2),
+          color:Math.random()<0.15?ACCENT2:TRACE_H});
+      }
+    }
+    for(let i=0;i<22;i++){
+      nodes.push({x:Math.floor(r(1,GX-1))*GRID, y:Math.floor(r(1,GY-1))*GRID,
+        sz:Math.random()<0.3?3:2, t:r(0,Math.PI*2), speed:r(0.025,0.06),
+        color:Math.random()<0.2?ACCENT:Math.random()<0.2?ACCENT2:TRACE_H,
+        bright:false, bTimer:Math.floor(r(0,50))});
+    }
+  }
+
+  function spawnPulse(){
+    if(!traces.length) return;
+    const tr=traces[Math.floor(Math.random()*traces.length)];
+    const cols=[TRACE_H,ACCENT,ACCENT2,'#ff44cc','#ffffff'];
+    pulses.push({tr, prog:0, speed:r(0.012,0.028),
+      color:cols[Math.floor(Math.random()*cols.length)],
+      len:r(0.15,0.35), hit:false});
+  }
+
+  let lastSpawn=0;
+  function render(now){
+    requestAnimationFrame(render);
+    const W=cv.width, H=cv.height;
+    if(!W||!H) return;
+
+    const g=cx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'#102a45'); g.addColorStop(1,'#0e2840');
+    cx.fillStyle=g; cx.fillRect(0,0,W,H);
+
+    // dot grid — skip chip area
+    cx.fillStyle='#00ff88'; cx.globalAlpha=0.09;
+    for(let x=GRID;x<W;x+=GRID) for(let y=GRID;y<H;y+=GRID){
+      if(pointInChip(x,y)<0) cx.fillRect(x-0.5,y-0.5,1.5,1.5);
+    }
+    cx.globalAlpha=1;
+
+    // traces — potong di area chip
+    traces.forEach(tr=>{
+      tr.t+=0.008;
+      cx.globalAlpha=0.42+0.12*Math.sin(tr.t);
+      cx.fillStyle=tr.color;
+      if(tr.horiz){
+        for(let px=tr.x1;px<=tr.x2;px+=2){
+          if(pointInChip(px,tr.y1)<0) cx.fillRect(px,tr.y1-1,2,2);
+        }
+      } else {
+        for(let py=tr.y1;py<=tr.y2;py+=2){
+          if(pointInChip(tr.x1,py)<0) cx.fillRect(tr.x1-1,py,2,2);
+        }
+      }
+      cx.globalAlpha=1;
+    });
+
+    // nodes — skip in-chip
+    nodes.forEach(n=>{
+      n.t+=n.speed; n.bTimer--;
+      if(n.bTimer<=0){ n.bright=Math.random()<0.22; n.bTimer=Math.floor(r(15,65)); }
+      if(pointInChip(n.x,n.y)>=0) return;
+      const a=n.bright?1:0.5+0.35*Math.sin(n.t);
+      cx.globalAlpha=a; cx.fillStyle=n.bright?'#ffffff':n.color;
+      cx.fillRect(n.x-n.sz,n.y-n.sz,n.sz*2,n.sz*2);
+      if(n.bright){ cx.globalAlpha=0.35; cx.fillStyle=n.color; cx.fillRect(n.x-n.sz*3,n.y-n.sz*3,n.sz*6,n.sz*6); }
+      cx.globalAlpha=1;
+    });
+
+    // chip glow overlay — nyala saat kena pulse
+    chipRects.forEach(chip=>{
+      if(chip.glowT>0){
+        const prog = chip.glowT/45;
+        cx.globalAlpha = prog*0.45;
+        cx.fillStyle = chip.glowColor || ACCENT;
+        cx.fillRect(chip.x-2, chip.y-2, chip.w+4, chip.h+4);
+        // inner bright center
+        cx.globalAlpha = prog*0.25;
+        cx.fillStyle = '#ffffff';
+        cx.fillRect(chip.x+2, chip.y+2, chip.w-4, chip.h-4);
+        cx.globalAlpha=1;
+        chip.glowT--;
+      }
+    });
+
+    // pulses — kena chip → burst
+    if(now-lastSpawn>80){ spawnPulse(); lastSpawn=now; }
+    for(let i=pulses.length-1;i>=0;i--){
+      const p=pulses[i];
+      if(p.hit){ pulses.splice(i,1); continue; }
+      p.prog+=p.speed;
+      const head=Math.min(p.prog,1), tail=Math.max(0,p.prog-p.len);
+      if(tail>=1){ pulses.splice(i,1); continue; }
+      let hitThisFrame=false;
+      for(let s=0;s<=24;s++){
+        const t2=tail+(head-tail)*(s/24), fade=s/24;
+        const px=p.tr.horiz?p.tr.x1+(p.tr.x2-p.tr.x1)*t2:p.tr.x1;
+        const py=p.tr.horiz?p.tr.y1:p.tr.y1+(p.tr.y2-p.tr.y1)*t2;
+        const cIdx=pointInChip(px,py);
+        if(cIdx>=0 && !p.hit){
+          spawnBurst(chipRects[cIdx], px, py, p.color);
+          p.hit=true; hitThisFrame=true; break;
+        }
+        cx.globalAlpha=fade*0.9; cx.fillStyle=p.color;
+        const sz=fade>0.75?3:2; cx.fillRect(px-sz/2,py-sz/2,sz,sz);
+      }
+      cx.globalAlpha=1;
+    }
+
+    // particles — burst menyebar
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];
+      p.life--;
+      if(p.life<=0){ particles.splice(i,1); continue; }
+      p.x+=p.vx; p.y+=p.vy;
+      p.vx*=0.93; p.vy*=0.93; // friction
+      const fade=p.life/p.maxLife;
+      cx.globalAlpha=fade*0.9;
+      cx.fillStyle=p.color;
+      const sz=p.sz*fade+0.5;
+      cx.fillRect(p.x-sz/2, p.y-sz/2, sz, sz);
+      // ekor pendek
+      cx.globalAlpha=fade*0.3;
+      cx.fillRect(p.x-p.vx-sz/2, p.y-p.vy-sz/2, sz*0.7, sz*0.7);
+    }
+    cx.globalAlpha=1;
+
+    // scanline
+    const sy=(now*0.035)%H;
+    cx.globalAlpha=0.07; cx.fillStyle='#00ff88'; cx.fillRect(0,sy,W,2); cx.globalAlpha=1;
+  }
+
+  setTimeout(()=>{
+    cv.width=cv.parentElement.offsetWidth;
+    cv.height=cv.parentElement.offsetHeight;
+    init();
+    requestAnimationFrame(render);
+  },150);
+  window.addEventListener('resize',()=>{
+    cv.width=cv.parentElement.offsetWidth;
+    cv.height=cv.parentElement.offsetHeight;
+    init();
+  });
+})();
+
+/* ══════════════════════════════
+   ART CARD — kuas berjalan + hujan cat, satu canvas
+   ══════════════════════════════ */
+(function(){
+  const cv = document.getElementById('paintCanvas');
+  if(!cv) return;
+  const cx = cv.getContext('2d');
+  function r(a,b){ return a+Math.random()*(b-a); }
+
+  const PALETTE=['#ff3366','#ff6633','#ffcc00','#33ff99','#00ccff','#cc44ff','#ff44aa','#44ffcc','#FBC605','#ff5500','#00ffaa','#ff00cc'];
+
+  /* ── DRIPS (hujan cat) ── */
+  let drips=[], splats=[], smears=[];
+
+  function mkDrip(){
+    const W=cv.width, H=cv.height;
+    return { x:r(0.05,0.95)*W, y:-r(0,H*0.3), speed:r(0.5,1.6),
+      color:PALETTE[Math.floor(Math.random()*PALETTE.length)],
+      width:Math.floor(r(1,2.5))*2, trail:[], maxLen:Math.floor(r(8,20)) };
+  }
+
+  function initDrips(){
+    const W=cv.width, H=cv.height;
+    drips=[]; splats=[];
+    for(let i=0;i<6;i++){ const d=mkDrip(); d.y=r(0,H); drips.push(d); }
+    smears=[];
+    for(let i=0;i<10;i++) smears.push({
+      x:r(0,W), y:r(0,H*0.7), w:r(8,40), h:r(2,6),
+      color:PALETTE[Math.floor(Math.random()*PALETTE.length)], alpha:r(0.08,0.22)
+    });
+  }
+
+  /* ── BRUSH STROKES (kuas berjalan) ── */
+  const strokeColors = ['#1a1a1a','#FBC605','#e03535','#2196F3','#28c840','#FF6B35','#9B59B6','#00BCD4','#FF69B4'];
+
+  function bezier(sx,sy,cpx,cpy,ex,ey,t){
+    const mt=1-t;
+    return { x:mt*mt*sx+2*mt*t*cpx+t*t*ex, y:mt*mt*sy+2*mt*t*cpy+t*t*ey };
+  }
+
+  function newStroke(){
+    const W=cv.width, H=cv.height;
+    const side=Math.floor(Math.random()*4);
+    let sx,sy,ex,ey; const pad=-20;
+    if(side===0){ sx=r(pad,W-pad);sy=pad; ex=r(pad,W-pad);ey=H-pad; }
+    else if(side===1){ sx=pad;sy=r(pad,H-pad); ex=W-pad;ey=r(pad,H-pad); }
+    else if(side===2){ sx=pad;sy=pad; ex=W-pad;ey=H-pad; }
+    else { sx=W-pad;sy=pad; ex=pad;ey=H-pad; }
+    const cpx=(sx+ex)/2+r(-30,30), cpy=(sy+ey)/2+r(-30,30);
+    return { sx,sy,cpx,cpy,ex,ey,
+      color:strokeColors[Math.floor(Math.random()*strokeColors.length)],
+      width:r(18,32), head:0, tail:0, speed:r(0.007,0.015),
+      phase:'draw', holdTimer:0, holdMax:Math.floor(r(25,70)) };
+  }
+
+  function drawSegment(s,t0,t1){
+    const steps=20;
+    cx.beginPath();
+    const p0=bezier(s.sx,s.sy,s.cpx,s.cpy,s.ex,s.ey,t0);
+    cx.moveTo(p0.x,p0.y);
+    for(let i=1;i<=steps;i++){
+      const t=t0+(t1-t0)*(i/steps);
+      const p=bezier(s.sx,s.sy,s.cpx,s.cpy,s.ex,s.ey,t);
+      cx.lineTo(p.x,p.y);
+    }
+    cx.strokeStyle=s.color;
+    cx.globalAlpha=0.38;
+    cx.lineWidth=s.width;
+    cx.lineCap='square'; cx.lineJoin='miter';
+    cx.stroke();
+    cx.globalAlpha=1;
+  }
+
+  const strokes=[];
+  function initStrokes(){
+    strokes.length=0;
+    for(let i=0;i<3;i++){
+      const s=newStroke(); s.head=r(0,0.5);
+      if(Math.random()<0.3){ s.phase='hold'; s.holdTimer=Math.floor(r(0,s.holdMax)); }
+      strokes.push(s);
+    }
+  }
+
+  function init(){
+    const W=cv.width, H=cv.height;
+    if(!W||!H) return;
+    initDrips(); initStrokes();
+  }
+
+  function render(){
+    requestAnimationFrame(render);
+    const W=cv.width, H=cv.height;
+    if(!W||!H) return;
+
+    // bg kertas
+    cx.fillStyle='#f8f6f0'; cx.fillRect(0,0,W,H);
+    cx.strokeStyle='#e5e0d8'; cx.lineWidth=0.5;
+    cx.globalAlpha=0.35;
+    for(let x=0;x<W;x+=18){ cx.beginPath(); cx.moveTo(x,0); cx.lineTo(x,H); cx.stroke(); }
+    for(let y=0;y<H;y+=18){ cx.beginPath(); cx.moveTo(0,y); cx.lineTo(W,y); cx.stroke(); }
+    cx.globalAlpha=1;
+
+    // smears statis
+    smears.forEach(s=>{ cx.globalAlpha=s.alpha; cx.fillStyle=s.color; cx.fillRect(s.x-s.w/2,s.y,s.w,s.h); });
+    cx.globalAlpha=1;
+
+    // brush strokes — layer bawah, agak transparan
+    for(const s of strokes){
+      if(s.phase==='draw'){
+        s.head=Math.min(1,s.head+s.speed);
+        if(s.head>=1){ s.phase='hold'; s.holdTimer=0; }
+        drawSegment(s,s.tail,s.head);
+      } else if(s.phase==='hold'){
+        s.holdTimer++;
+        drawSegment(s,s.tail,s.head);
+        if(s.holdTimer>=s.holdMax) s.phase='erase';
+      } else if(s.phase==='erase'){
+        s.tail=Math.min(1,s.tail+s.speed*1.4);
+        if(s.tail<s.head) drawSegment(s,s.tail,s.head);
+        if(s.tail>=s.head) Object.assign(s,newStroke());
+      }
+    }
+
+    // splats
+    for(let i=splats.length-1;i>=0;i--){
+      const s=splats[i]; s.t++;
+      if(s.t>s.maxT){ splats.splice(i,1); continue; }
+      const prog=s.t/s.maxT;
+      s.drops.forEach(dr=>{
+        const dx=Math.cos(dr.angle)*prog*dr.maxDist;
+        const dy=Math.sin(dr.angle)*prog*dr.maxDist*0.35;
+        cx.globalAlpha=(1-prog)*0.75; cx.fillStyle=s.color;
+        cx.fillRect(s.x+dx-dr.sz/2,s.y+dy-dr.sz/2,dr.sz,dr.sz);
+      });
+      cx.globalAlpha=1;
+    }
+
+    // drips — layer atas, lebih vivid
+    for(let i=0;i<drips.length;i++){
+      const d=drips[i]; d.y+=d.speed;
+      d.trail.push({x:d.x,y:d.y});
+      if(d.trail.length>d.maxLen) d.trail.shift();
+      d.trail.forEach((pt,ti)=>{
+        const fade=ti/d.trail.length;
+        cx.globalAlpha=fade*0.9; cx.fillStyle=d.color;
+        cx.fillRect(pt.x-d.width*fade/2,pt.y-1,d.width*fade,2);
+      });
+      cx.globalAlpha=0.92; cx.fillStyle=d.color;
+      cx.beginPath(); cx.arc(d.x,d.y,d.width*0.8,0,Math.PI*2); cx.fill();
+      cx.globalAlpha=1;
+      if(d.y>H+8){
+        splats.push({x:d.x,y:H,color:d.color,t:0,maxT:r(20,38),
+          drops:Array.from({length:Math.floor(r(4,9))},()=>({
+            angle:r(0,Math.PI*2),maxDist:r(6,22),sz:Math.floor(r(1,3))*2
+          }))});
+        drips[i]=mkDrip();
+      }
+    }
+  }
+
+  setTimeout(()=>{ cv.width=cv.parentElement.offsetWidth; cv.height=cv.parentElement.offsetHeight; init(); render(); },120);
+  window.addEventListener('resize',()=>{ cv.width=cv.parentElement.offsetWidth; cv.height=cv.parentElement.offsetHeight; init(); });
+})();
+
 </script>
 </body>
 </html>
