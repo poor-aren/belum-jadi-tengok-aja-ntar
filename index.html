@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Ilham | Aren</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --yellow: #FBC605;
+  --black: #1a1a1a;
+  --dark: #343639;
+  --white: #ffffff;
+  --bg: #ffffff;
+  --grid: #d0d0d0;
+  --gray: #888;
+  --radius: 20px;
+  --radius-sm: 12px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 30px 30px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px;
+}
+
+/* MAIN CARD */
+.main-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--white);
+  border: none;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: popIn .45s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+/* NAV INSIDE CARD */
+.card-nav {
+  border-bottom: 2px solid var(--black);
+  background: var(--white);
+}
+.nav-row { display: flex; width: 100%; justify-content: flex-end; }
+.nav-link {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  color: var(--black);
+  text-decoration: none;
+  padding: 11px 14px;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all .18s;
+}
+.nav-link.active { border-bottom-color: var(--yellow); }
+.nav-link:hover  { background: #fffbe6; }
+
+/* HERO */
+.hero {
+  padding: 22px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  border-bottom: 2px solid #eeeeea;
+}
+
+.hero-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #eeeeea;
+}
+
+.hero-top-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+/* Avatar */
+.avatar-ring {
+  width: 80px; height: 80px;
+  position: relative;
+  flex-shrink: 0;
+  padding: 4px;
+  border-radius: 14px;
+  background: linear-gradient(var(--white), var(--white)) padding-box,
+              repeating-linear-gradient(90deg, var(--yellow) 0px, var(--yellow) 8px, transparent 8px, transparent 14px) border-box,
+              repeating-linear-gradient(180deg, var(--yellow) 0px, var(--yellow) 8px, transparent 8px, transparent 14px) border-box;
+  border: 3px solid transparent;
+  animation: marchingAnts 1s linear infinite;
+  background-size: 100% 100%, 200% 3px, 3px 200%;
+  background-position: 0 0, 0 0, 0 0;
+}
+.avatar-inner {
+  width: 100%; height: 100%;
+  border-radius: 10px;
+  border: 2px solid var(--black);
+  overflow: hidden;
+  background: #e0e0e0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  position: relative; z-index: 1;
+}
+.avatar-inner img { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Name */
+.hero-name {
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -.3px;
+  line-height: 1.15;
+  color: var(--black);
+}
+.hero-name .pipe { color: var(--yellow); font-weight: 900; margin: 0 4px; }
+.hero-name .aren {
+  color: var(--yellow);
+  padding: 1px 0px 2px;
+}
+
+/* Typing */
+.hero-role {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--black);
+  display: flex; align-items: center;
+  gap: 1px;
+  min-height: 18px;
+}
+.type-cursor {
+  display: inline-block;
+  width: 2px; height: 13px;
+  background: var(--yellow);
+  border-radius: 1px;
+  animation: blink .65s infinite;
+  vertical-align: middle;
+  margin-left: 1px;
+}
+
+/* Bio */
+.hero-bio {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #555;
+  font-weight: 500;
+  text-align: justify;
+}
+
+/* PROJECT SECTION */
+.project-section {
+  padding: 18px 18px 18px;
+}
+.section-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 5px;
+}
+.section-header h2 {
+  font-size: 10px; font-weight: 900; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--black); white-space: nowrap;
+}
+.section-header .divider { flex:1; height:2px; background:var(--black); }
+.section-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; color: var(--gray); margin-bottom: 14px; font-style: italic;
+}
+
+/* Portal row */
+.portal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Portal card base */
+.portal-card {
+  border-radius: var(--radius-sm);
+  border: 2.5px solid var(--black);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: none;
+  transition: transform .12s, box-shadow .12s;
+  display: flex; flex-direction: column;
+  min-height: 240px;
+}
+.portal-card:active {
+  transform: translate(2px,2px);
+  box-shadow: none;
+}
+
+/* TECH */
+.tech-inner {
+  background: var(--dark);
+  flex: 1;
+  display: flex; flex-direction: column;
+  padding: 13px 11px 10px;
+}
+.p-label {
+  font-size: 7.5px; font-weight: 800; letter-spacing: 1.8px;
+  text-transform: uppercase; margin-bottom: 3px;
+}
+.tech-inner .p-label { color: #888; }
+.p-title {
+  font-size: 16px; font-weight: 900; line-height: 1.1; margin-bottom: 10px;
+}
+.tech-inner .p-title { color: var(--white); }
+
+.terminal {
+  background: #111; border-radius: 7px; flex: 1;
+  display: flex; flex-direction: column; border: 1px solid #2a2a2a;
+}
+.term-bar {
+  background: #252525; padding: 6px 9px;
+  display: flex; gap: 5px; align-items: center;
+}
+.td { width: 8px; height: 8px; border-radius: 50%; }
+.td-r{background:#ff5f57;} .td-y{background:#febc2e;} .td-g{background:#28c840;}
+.term-body {
+  padding: 8px 10px; flex: 1;
+  font-family: 'Space Mono', monospace;
+  font-size: 8px; line-height: 1.85; overflow: hidden;
+  color: #d4d4d4;
+}
+.tg{color:#4ec9b0;} .ty{color:#dcdcaa;} .to{color:#ce9178;} .tp{color:#c586c0;}
+.tcursor {
+  display:inline-block; width:5px; height:10px;
+  background:#d4d4d4; animation:blink 1s infinite;
+  vertical-align:middle; border-radius:1px; margin-left:1px;
+}
+.tech-cta {
+  font-family:'Space Mono',monospace; font-size:7.5px;
+  color:var(--yellow); text-align:right; padding-top:8px; letter-spacing:.4px;
+}
+
+/* ART */
+.art-inner {
+  background: var(--white);
+  flex: 1;
+  display: flex; flex-direction: column;
+  padding: 13px 11px 10px;
+  position: relative;
+  overflow: hidden;
+}
+.art-inner .p-label { color: rgba(0,0,0,.4); }
+.art-inner .p-title { color: var(--black); position: relative; z-index: 2; }
+.art-sketch-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.art-icon-box {
+  position: absolute; top: 13px; right: 11px;
+  width: 32px; height: 32px;
+  background: var(--yellow); border: 2px solid var(--black);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  z-index: 2;
+}
+.art-tags {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; position: relative; z-index: 2;
+}
+.art-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 7px; font-weight: 700;
+  padding: 3px 8px; border-radius: 100px;
+  border: 1.5px solid var(--black);
+  background: rgba(251,198,5,0.18);
+  color: var(--black);
+}
+.art-visual {
+  flex: 1; border-radius: 9px;
+  border: 2px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.85);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; min-height: 75px;
+  position: relative; z-index: 2;
+}
+.art-visual img { width:100%; height:100%; object-fit:cover; }
+.art-placeholder {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.art-placeholder .ico { font-size:26px; animation: float 2.5s ease-in-out infinite; }
+.art-placeholder small {
+  font-family:'Space Mono',monospace; font-size:7px;
+  color:rgba(0,0,0,.45); text-align:center;
+}
+.art-cta {
+  margin-top: 9px;
+  background: var(--black); color: var(--white);
+  font-family:'Space Mono',monospace; font-size:8.5px; font-weight:700;
+  text-align:center; padding:7px; border-radius:7px; letter-spacing:.4px;
+  position: relative; z-index: 2;
+}
+
+/* FOOTER */
+.card-footer {
+  border-top: 2px solid #eeeeea;
+  padding: 13px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.socials { display: flex; gap: 7px; }
+.soc-btn {
+  width: 35px; height: 35px;
+  border: 2px solid var(--black); border-radius: 9px;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--black); text-decoration: none;
+  transition: all .12s;
+}
+.soc-btn:active { transform:translate(2px,2px); }
+.soc-btn svg { width:15px; height:15px; }
+.footer-copy {
+  font-family:'Space Mono',monospace; font-size:7.5px;
+  color:var(--gray); white-space:nowrap;
+}
+
+/* KEYFRAMES */
+@keyframes popIn {
+  from { opacity:0; transform:scale(.94) translateY(14px); }
+  to   { opacity:1; transform:scale(1)   translateY(0); }
+}
+@keyframes blink  { 0%,50%{opacity:1;} 51%,100%{opacity:0;} }
+@keyframes spin   { to { transform: rotate(360deg); } }
+@keyframes float  { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);} }
+@keyframes marchingAnts {
+  0%   { background-position: 0 0, 0 0, 0 0; }
+  100% { background-position: 0 0, -28px 0, 0 -28px; }
+}
+
+@media(min-width:480px){
+  body { padding:32px 16px; align-items:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="main-card">
+
+  <!-- NAV -->
+  <nav class="card-nav">
+    <div class="nav-row">
+      <a href="./index.html"        class="nav-link active">HOME</a>
+      <a href="./certificates.html" class="nav-link">CERTIFICATES</a>
+      <a href="./activities.html"   class="nav-link">ACTIVITIES</a>
+      <a href="./aboutme.html"      class="nav-link">ABOUT ME</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-top">
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <!-- <img src="YOUR_CLOUDINARY_PHOTO_URL" alt="Ilham"> -->
+          <span>👤</span>
+        </div>
+      </div>
+      <div class="hero-top-info">
+        <div class="hero-name">
+          MUHAMMAD ILHAM<span class="pipe">|</span><span class="aren">AREN</span>
+        </div>
+        <div class="hero-role">
+          <span id="typing-text"></span><span class="type-cursor"></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="hero-bio">
+      Building intelligent systems and creating visual stories. Passionate about embedded systems, IoT innovations, and bringing characters to life through digital art.
+    </p>
+  </section>
+
+  <!-- PORTALS -->
+  <div class="project-section">
+    <div class="section-header">
+      <h2>Project Portfolio</h2>
+      <div class="divider"></div>
+    </div>
+    <p class="section-sub">// tap a card to explore</p>
+
+    <div class="portal-row">
+
+      <!-- TECH -->
+      <div class="portal-card" onclick="location.href='#tech'">
+        <div class="tech-inner">
+          <div class="p-label">01 / TECH</div>
+          <div class="p-title">TECH &amp;<br>RESEARCH</div>
+          <div class="terminal">
+            <div class="term-bar">
+              <div class="td td-r"></div>
+              <div class="td td-y"></div>
+              <div class="td td-g"></div>
+            </div>
+            <div class="term-body" id="term"></div>
+          </div>
+          <div class="tech-cta">&gt; EXPLORE.sh →</div>
+        </div>
+      </div>
+
+      <!-- ART -->
+      <div class="portal-card" onclick="location.href='#art'">
+        <div class="art-inner">
+          <canvas class="art-sketch-canvas" id="sketchCanvas"></canvas>
+          <div class="p-label">02 / ART</div>
+          <div class="p-title">ART &amp;<br>CREATIVE</div>
+          <div class="art-icon-box">✏️</div>
+          <div class="art-tags">
+            <span class="art-tag">Illustration</span>
+            <span class="art-tag">Tweening</span>
+            <span class="art-tag">3D</span>
+          </div>
+          <div class="art-visual">
+            <!-- <img src="YOUR_CLOUDINARY_GIF_URL" alt="art"> -->
+            <div class="art-placeholder">
+              <div class="ico">🎨</div>
+              <small>your art<br>GIF here</small>
+            </div>
+          </div>
+          <div class="art-cta">EXPLORE →</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="card-footer">
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/muhammad-ilham-6480b7345/" target="_blank" class="soc-btn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="https://www.instagram.com/ilham.aren/" target="_blank" class="soc-btn" title="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="/cdn-cgi/l/email-protection#adc4c1c5ccc0ccdfc8c3edc8c0ccc4c183cec2c0" class="soc-btn" title="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+      </a>
+      <a href="https://github.com/poor-aren" target="_blank" class="soc-btn" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C6.626 0 2 5.373 2 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c.997.005 2.003.138 2.944.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+    </div>
+    <div class="footer-copy">© 2025 ilham | aren</div>
+  </footer>
+
+</div>
+
+
+<script>
+/* TYPING ROLE */
+const roles = ['IoT Engineer', 'Digital Illustrator'];
+let rI=0, cI=0, del=false;
+function typeRole(){
+  const el=document.getElementById('typing-text');
+  const cur=roles[rI];
+  if(!del){ el.textContent=cur.substring(0,cI+1); cI++;
+    if(cI===cur.length){del=true; setTimeout(typeRole,2000); return;}
+  } else { el.textContent=cur.substring(0,cI-1); cI--;
+    if(cI===0){del=false; rI=(rI+1)%roles.length; setTimeout(typeRole,400); return;}
+  }
+  setTimeout(typeRole, del?50:90);
+}
+setTimeout(typeRole, 700);
+
+/* TERMINAL */
+const termEl = document.getElementById('term');
+const skills = ['Embedded Systems','IoT','Machine Learning','Web Dev','Computer Vision'];
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+async function runTerm(){
+  while(true){
+    const cmd='print(tech_skills)';
+    let t='';
+    for(const ch of cmd){
+      t+=ch;
+      const c=t.replace('print','<span class="tg">print</span>').replace('tech_skills','<span class="ty">tech_skills</span>');
+      termEl.innerHTML='<span class="tg">></span> '+c+'<span class="tcursor"></span>';
+      await sleep(48);
+    }
+    await sleep(380);
+    const sp=['|','/','—','\\'];
+    for(let i=0;i<10;i++){
+      termEl.innerHTML='<span class="tg">></span> <span class="tg">print</span>(<span class="ty">tech_skills</span>)<br>'+sp[i%4]+'<span class="tcursor"></span>';
+      await sleep(85);
+    }
+    let out='<span class="tg">></span> <span class="tg">print</span>(<span class="ty">tech_skills</span>)<br>';
+    for(const s of skills){
+      out+='<span class="to">- '+s+'</span><br>';
+      termEl.innerHTML=out; await sleep(170);
+    }
+    await sleep(2200);
+    let clr='';
+    for(const ch of 'clear'){
+      clr+=ch;
+      termEl.innerHTML=out+'<span class="tg">></span> <span class="tp">'+clr+'</span><span class="tcursor"></span>';
+      await sleep(80);
+    }
+    await sleep(200);
+    termEl.innerHTML='';
+    await sleep(300);
+  }
+}
+/* SKETCH CANVAS */
+const sketchEl = document.getElementById('sketchCanvas');
+const sCtx = sketchEl.getContext('2d');
+
+function resizeSketch(){
+  const p = sketchEl.parentElement;
+  sketchEl.width = p.offsetWidth;
+  sketchEl.height = p.offsetHeight;
+}
+resizeSketch();
+window.addEventListener('resize', resizeSketch);
+
+function rand(a,b){ return a + Math.random()*(b-a); }
+
+const strokeColors = ['#1a1a1a','#FBC605','#e03535','#2196F3','#28c840','#FF6B35','#9B59B6','#00BCD4','#FF69B4','#FF9800'];
+
+function newStroke(){
+  const w = sketchEl.width, h = sketchEl.height;
+  // Start from a random edge, end at opposite side — so it always crosses fully
+  const side = Math.floor(Math.random()*4);
+  let sx, sy, ex, ey;
+  const pad = -20; // start/end outside card bounds
+  if(side === 0){ // top → bottom
+    sx = rand(pad, w-pad); sy = pad;
+    ex = rand(pad, w-pad); ey = h-pad;
+  } else if(side === 1){ // left → right
+    sx = pad; sy = rand(pad, h-pad);
+    ex = w-pad; ey = rand(pad, h-pad);
+  } else if(side === 2){ // diagonal TL → BR
+    sx = pad; sy = pad;
+    ex = w-pad; ey = h-pad;
+  } else { // diagonal TR → BL
+    sx = w-pad; sy = pad;
+    ex = pad; ey = h-pad;
+  }
+  // slight curve control point
+  const cpx = (sx+ex)/2 + rand(-30, 30);
+  const cpy = (sy+ey)/2 + rand(-30, 30);
+  return {
+    sx, sy, cpx, cpy, ex, ey,
+    color: strokeColors[Math.floor(Math.random()*strokeColors.length)],
+    width: rand(22, 38),
+    head: 0,
+    tail: 0,
+    speed: rand(0.008, 0.018),
+    phase: 'draw',
+    holdTimer: 0,
+    holdMax: Math.floor(rand(30, 80)),
+  };
+}
+
+function bezier(sx,sy,cpx,cpy,ex,ey,t){
+  const mt = 1-t;
+  return {
+    x: mt*mt*sx + 2*mt*t*cpx + t*t*ex,
+    y: mt*mt*sy + 2*mt*t*cpy + t*t*ey
+  };
+}
+
+function drawSegment(s, t0, t1){
+  const steps = 20;
+  sCtx.beginPath();
+  const p0 = bezier(s.sx,s.sy,s.cpx,s.cpy,s.ex,s.ey, t0);
+  sCtx.moveTo(p0.x, p0.y);
+  for(let i=1;i<=steps;i++){
+    const t = t0 + (t1-t0)*(i/steps);
+    const p = bezier(s.sx,s.sy,s.cpx,s.cpy,s.ex,s.ey, t);
+    sCtx.lineTo(p.x, p.y);
+  }
+  sCtx.strokeStyle = s.color;
+  sCtx.globalAlpha = 0.45;
+  sCtx.lineWidth = s.width;
+  sCtx.lineCap = 'square';
+  sCtx.lineJoin = 'miter';
+  sCtx.stroke();
+  sCtx.globalAlpha = 1;
+}
+
+const strokes = [];
+for(let i=0;i<4;i++){
+  const s = newStroke();
+  s.head = rand(0, 0.6);
+  if(Math.random()<0.3){ s.phase='hold'; s.holdTimer=Math.floor(rand(0,s.holdMax)); }
+  strokes.push(s);
+}
+
+function drawSketch(){
+  sCtx.clearRect(0,0,sketchEl.width,sketchEl.height);
+  for(const s of strokes){
+    if(s.phase === 'draw'){
+      s.head = Math.min(1, s.head + s.speed);
+      if(s.head >= 1){ s.phase = 'hold'; s.holdTimer = 0; }
+      drawSegment(s, s.tail, s.head);
+    } else if(s.phase === 'hold'){
+      s.holdTimer++;
+      drawSegment(s, s.tail, s.head);
+      if(s.holdTimer >= s.holdMax) s.phase = 'erase';
+    } else if(s.phase === 'erase'){
+      s.tail = Math.min(1, s.tail + s.speed * 1.3);
+      if(s.tail < s.head) drawSegment(s, s.tail, s.head);
+      if(s.tail >= s.head) Object.assign(s, newStroke());
+    }
+  }
+  requestAnimationFrame(drawSketch);
+}
+drawSketch();
+
+runTerm();
+</script>
+</body>
+</html>
