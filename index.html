@@ -50,7 +50,6 @@ body {
 
 /* NAV INSIDE CARD */
 .card-nav {
-  border-bottom: 2px solid var(--black);
   background: var(--white);
 }
 .nav-row { display: flex; width: 100%; justify-content: flex-end; }
@@ -85,6 +84,25 @@ body {
   gap: 14px;
   padding-bottom: 14px;
   border-bottom: 2px solid #eeeeea;
+  position: relative;
+  overflow: hidden;
+  margin: -22px -22px 0 -22px;
+  padding: 16px 22px 16px 22px;
+  min-height: 100px;
+  image-rendering: pixelated;
+}
+
+/* ── PIXEL SCENE behind hero-top ── */
+#pixelCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  display: block;
+}
+.hero-top > *:not(#pixelCanvas) {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-top-info {
@@ -127,7 +145,7 @@ body {
   font-weight: 900;
   letter-spacing: -.3px;
   line-height: 1.15;
-  color: var(--black);
+  color: var(--white);
 }
 .hero-name .pipe { color: var(--yellow); font-weight: 900; margin: 0 4px; }
 .hero-name .aren {
@@ -140,7 +158,7 @@ body {
   font-family: 'Space Mono', monospace;
   font-size: 11px;
   font-weight: 700;
-  color: var(--black);
+  color: var(--white);
   display: flex; align-items: center;
   gap: 1px;
   min-height: 18px;
@@ -155,7 +173,7 @@ body {
   margin-left: 1px;
 }
 
-/* Bio */
+/* Bio — kembali ke asli */
 .hero-bio {
   font-size: 12px;
   line-height: 1.7;
@@ -367,6 +385,7 @@ body {
   <!-- HERO -->
   <section class="hero">
     <div class="hero-top">
+      <canvas id="pixelCanvas"></canvas>
       <div class="avatar-ring">
         <div class="avatar-inner">
           <!-- <img src="YOUR_CLOUDINARY_PHOTO_URL" alt="Ilham"> -->
@@ -478,6 +497,331 @@ function typeRole(){
   setTimeout(typeRole, del?50:90);
 }
 setTimeout(typeRole, 700);
+
+/* ══════════════════════════════════════
+   UNDERWATER PIXEL SCENE — hero-top bg
+   ══════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('pixelCanvas');
+  if(!cv) return;
+  const cx = cv.getContext('2d');
+  const P = 3;
+
+  function resize(){
+    cv.width  = cv.parentElement.offsetWidth;
+    cv.height = cv.parentElement.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function r(min,max){ return min+Math.random()*(max-min); }
+
+  /* God rays */
+  const RAYS=[];
+  for(let i=0;i<7;i++) RAYS.push({x:r(0.05,0.95),t:r(0,Math.PI*2),speed:r(0.0003,0.0007),w:r(0.025,0.07)});
+  function drawRays(W,H){
+    RAYS.forEach(ray=>{
+      ray.t+=ray.speed;
+      const rx=ray.x*W+Math.sin(ray.t)*W*0.04;
+      const hw=ray.w*W;
+      cx.globalAlpha=0.10+0.07*Math.sin(ray.t);
+      cx.fillStyle='#e0f7ff';
+      cx.beginPath();
+      cx.moveTo(rx-hw*0.3,0); cx.lineTo(rx+hw*0.3,0);
+      cx.lineTo(rx+hw,H);     cx.lineTo(rx-hw,H);
+      cx.closePath(); cx.fill();
+      cx.globalAlpha=1;
+    });
+  }
+
+  /* Coral + seaweed + dasar */
+  const WEED_PHASE=[];
+  const WEEDS=[0.31,0.35,0.39,0.44,0.48,0.53,0.57,0.61];
+  WEEDS.forEach(()=>WEED_PHASE.push(r(0,Math.PI*2)));
+  const CORALS=[
+    {x:0.04,w:0.034,h:0.30,c:'#e03055',c2:'#ff6688'},
+    {x:0.09,w:0.024,h:0.19,c:'#cc2244',c2:'#ff88aa'},
+    {x:0.14,w:0.038,h:0.34,c:'#d02848',c2:'#ff5577'},
+    {x:0.20,w:0.026,h:0.22,c:'#ff6633',c2:'#ffaa66'},
+    {x:0.26,w:0.020,h:0.16,c:'#e03055',c2:'#ff6688'},
+    {x:0.65,w:0.024,h:0.17,c:'#ff6633',c2:'#ffaa66'},
+    {x:0.70,w:0.036,h:0.30,c:'#e03055',c2:'#ff6688'},
+    {x:0.76,w:0.024,h:0.21,c:'#cc2244',c2:'#ff88aa'},
+    {x:0.82,w:0.038,h:0.32,c:'#ff6633',c2:'#ffaa66'},
+    {x:0.88,w:0.026,h:0.20,c:'#d02848',c2:'#ff5577'},
+    {x:0.93,w:0.030,h:0.26,c:'#e03055',c2:'#ff6688'},
+  ];
+  function drawSeabed(W,H){
+    const BASE=H*0.78;
+    // dasar
+    cx.fillStyle='#c8a96e'; cx.fillRect(0,BASE,W,H-BASE);
+    cx.fillStyle='#d4b87a'; cx.fillRect(0,BASE,W,P*4);
+    // batu
+    [0.33,0.42,0.51,0.60,0.69].forEach(rx=>{
+      cx.fillStyle='#b89a5a'; cx.fillRect(rx*W,BASE-P*3,P*5,P*4);
+      cx.fillStyle='#c4a868'; cx.fillRect(rx*W+P,BASE-P*4,P*3,P);
+    });
+    // coral
+    CORALS.forEach(co=>{
+      const x=co.x*W, h=co.h*H, w=co.w*W;
+      cx.fillStyle=co.c;
+      cx.fillRect(x,BASE-h,w,h);
+      cx.fillRect(x-w*0.9,BASE-h*0.68,w*0.55,h*0.38);
+      cx.fillRect(x-w*1.3,BASE-h*0.84,w*0.45,h*0.22);
+      cx.fillRect(x+w,BASE-h*0.62,w*0.55,h*0.32);
+      cx.fillRect(x+w*1.4,BASE-h*0.78,w*0.45,h*0.20);
+      cx.fillStyle=co.c2;
+      cx.fillRect(x+w*0.1,BASE-h-P*3,w*0.8,P*3);
+      cx.fillRect(x-w*0.8,BASE-h*0.85-P*2,w*0.45,P*2);
+      cx.fillRect(x+w*1.1,BASE-h*0.79-P*2,w*0.45,P*2);
+    });
+    // seaweed
+    const now=Date.now();
+    WEEDS.forEach((wx,i)=>{
+      const x=wx*W;
+      const segH=H*0.2+Math.sin(now*0.001+i)*H*0.03;
+      cx.fillStyle=['#22cc44','#33dd55','#1ab83a'][i%3];
+      for(let s=0;s<6;s++){
+        const sway=Math.sin(now*0.0009+i*1.1+s*0.4)*P*(s*0.6+1);
+        cx.fillRect(x+sway-P,BASE-segH*(s/5)-P,P*2,P*2);
+      }
+    });
+  }
+
+  /* Ikan */
+  const FCOLORS=[
+    ['#ff6600','#ffaa44'],['#ffdd00','#fff088'],['#ff2288','#ff88cc'],
+    ['#00bbff','#88eeff'],['#ff3333','#ff9999'],['#9922ff','#cc88ff'],
+    ['#00dd77','#88ffbb'],['#ff8800','#ffcc55'],
+  ];
+  function mkFish(fromLeft){
+    const [c1,c2]=FCOLORS[Math.floor(Math.random()*FCOLORS.length)];
+    const dir=fromLeft?1:-1;
+    return {
+      x:fromLeft?r(-0.15,-0.05):r(1.05,1.15),
+      y:r(0.10,0.72),
+      speed:(r(0.0007,0.0016))*dir,
+      wobT:r(0,Math.PI*2), wobAmp:r(0.006,0.014),
+      tailT:r(0,Math.PI*2), c1,c2,dir,
+      size:1+(Math.random()<0.28?1:0),
+    };
+  }
+  const FISH=[];
+  for(let i=0;i<11;i++){const f=mkFish(Math.random()<0.5);f.x=Math.random();FISH.push(f);}
+
+  function drawFish(f,W,H){
+    f.wobT+=0.022; f.tailT+=0.17;
+    f.y+=Math.sin(f.wobT)*f.wobAmp*0.12;
+    f.x+=f.speed;
+    if(f.x>1.14||f.x<-0.14) Object.assign(f,mkFish(f.dir===-1));
+    const x=f.x*W, y=f.y*H, s=f.size*P;
+    const tf=Math.sin(f.tailT)*s*0.7;
+    cx.save();
+    if(f.dir===-1){cx.translate(x,0);cx.scale(-1,1);cx.translate(-x,0);}
+    // ekor
+    cx.fillStyle=f.c2;
+    cx.fillRect(x-s*2,y+tf-s,s*2,s);
+    cx.fillRect(x-s*2,y+tf,  s*2,s);
+    // badan
+    cx.fillStyle=f.c1; cx.fillRect(x,y-s,s*4,s*2);
+    // kepala
+    cx.fillStyle=f.c2; cx.fillRect(x+s*3,y-s,s*2,s*2);
+    // sirip
+    cx.fillStyle=f.c2; cx.fillRect(x+s,y-s*2,s*2,s);
+    // mata
+    cx.fillStyle='#000'; cx.fillRect(x+s*4,y-P,P,P);
+    cx.fillStyle='#fff'; cx.fillRect(x+s*4+1,y-P+1,P*0.5,P*0.5);
+    cx.restore();
+  }
+
+  /* Ubur-ubur */
+  const JCOLORS=[
+    ['#cc33ff','#ee88ff','#ffbbff'],
+    ['#33bbff','#88ddff','#bbffff'],
+    ['#ff3399','#ff88cc','#ffbbee'],
+    ['#ffaa00','#ffdd66','#fff5aa'],
+  ];
+  function mkJelly(){
+    const c=JCOLORS[Math.floor(Math.random()*JCOLORS.length)];
+    return {x:r(0.06,0.92),y:r(0.55,0.90),t:r(0,Math.PI*2),
+      pulse:r(0,Math.PI*2),rise:r(0.00018,0.00045),colors:c,sz:r(1.2,2.4)};
+  }
+  const JELLIES=[];
+  for(let i=0;i<5;i++) JELLIES.push(mkJelly());
+
+  function drawJelly(j,W,H){
+    j.pulse+=0.04; j.t+=j.rise; j.y-=j.rise*0.55;
+    j.x+=Math.sin(j.t)*0.0005;
+    if(j.y<-0.12) Object.assign(j,mkJelly(),{y:0.96});
+    const x=j.x*W, y=j.y*H, s=j.sz*P;
+    const pu=Math.sin(j.pulse);
+    const hw=s*(2.4+pu*0.5), bh=s*(1.4+pu*0.3);
+    cx.globalAlpha=0.80;
+    cx.fillStyle=j.colors[0];
+    for(let dx=-hw;dx<=hw;dx+=P){
+      const frac=1-(dx/hw)**2;
+      cx.fillRect(x+dx,y-bh*frac,P,bh*frac);
+    }
+    cx.fillStyle=j.colors[1];
+    cx.fillRect(x-hw,y,hw*2,P);
+    cx.fillStyle=j.colors[2];
+    for(let t=0;t<5;t++){
+      const tx=x-hw+(t/4)*hw*2;
+      cx.fillRect(tx,y+P,P,s*(1.8+Math.sin(j.pulse+t)*0.7));
+    }
+    cx.globalAlpha=1;
+  }
+
+  /* Gelembung */
+  const BUBS=[];
+  for(let i=0;i<20;i++) BUBS.push({x:Math.random(),y:Math.random(),
+    sp:r(0.0005,0.0017),wt:r(0,Math.PI*2),sz:P*(Math.random()<0.5?1:2)});
+  function drawBubs(W,H){
+    BUBS.forEach(b=>{
+      b.y-=b.sp; b.wt+=0.028;
+      if(b.y<-0.04) b.y=1.02;
+      const bx=b.x*W+Math.sin(b.wt)*P*2, by=b.y*H;
+      cx.globalAlpha=0.50; cx.fillStyle='#e0f8ff';
+      cx.fillRect(bx,by,b.sz,b.sz);
+      cx.globalAlpha=0.85; cx.fillStyle='#ffffff';
+      cx.fillRect(bx,by,P*0.6,P*0.6);
+      cx.globalAlpha=1;
+    });
+  }
+
+  /* ── Starfish ── */
+  const STARCOLORS=['#ff6633','#ff4488','#ffaa00','#ff3366','#ff8833'];
+  function mkStar(){
+    return {
+      x:r(0.04,0.96), sz:r(1.2,2.2),
+      color:STARCOLORS[Math.floor(Math.random()*STARCOLORS.length)],
+      rot:r(0,Math.PI*2), pulse:r(0,Math.PI*2)
+    };
+  }
+  const STARS=[];
+  for(let i=0;i<6;i++) STARS.push(mkStar());
+
+  function drawStarfish(s,W,H){
+    s.pulse+=0.018;
+    const BASE=H*0.78;
+    const x=s.x*W, y=BASE+P*1.5;
+    const sz=s.sz*P*(1+Math.sin(s.pulse)*0.06);
+    cx.save(); cx.translate(x,y); cx.rotate(s.rot);
+    // 5 arms pixel-style
+    cx.fillStyle=s.color;
+    const arms=5;
+    for(let a=0;a<arms;a++){
+      const ang=(a/arms)*Math.PI*2;
+      for(let d=0;d<sz*2.5;d+=P){
+        const fade=1-d/(sz*2.5);
+        const ax=Math.cos(ang)*d, ay=Math.sin(ang)*d;
+        cx.globalAlpha=0.85*fade;
+        cx.fillRect(ax-P*0.5,ay-P*0.5,P*(0.8+fade*0.6),P*(0.8+fade*0.6));
+      }
+    }
+    // center dot
+    cx.globalAlpha=1;
+    cx.fillStyle='#ffddaa';
+    cx.fillRect(-P*0.5,-P*0.5,P,P);
+    cx.restore();
+    cx.globalAlpha=1;
+  }
+
+  /* ── Kepiting ── */
+  function mkCrab(){
+    const fromLeft=Math.random()<0.5;
+    return {
+      x:fromLeft?r(-0.05,0.0):r(1.0,1.05),
+      dir:fromLeft?1:-1,
+      speed:r(0.00025,0.00055),
+      legT:r(0,Math.PI*2),
+      color:['#cc2200','#dd3311','#bb1100'][Math.floor(Math.random()*3)],
+      sz:r(1.0,1.6)
+    };
+  }
+  const CRABS=[];
+  for(let i=0;i<3;i++){const c=mkCrab();c.x=r(0.05,0.95);CRABS.push(c);}
+
+  function drawCrab(c,W,H){
+    c.legT+=0.12; c.x+=c.speed*c.dir;
+    if(c.x>1.08||c.x<-0.08) Object.assign(c,mkCrab());
+    const BASE=H*0.78;
+    const x=c.x*W, y=BASE-P*1.5, s=c.sz*P;
+    const ls=Math.sin(c.legT)*s*0.5;
+    cx.save();
+    if(c.dir===-1){cx.translate(x,0);cx.scale(-1,1);cx.translate(-x,0);}
+    cx.fillStyle=c.color;
+    // kaki kiri
+    cx.fillRect(x-s*2.5,y+ls,s,s*0.5);
+    cx.fillRect(x-s*2,y-ls,s,s*0.5);
+    cx.fillRect(x-s*1.5,y+ls*0.5,s*0.8,s*0.5);
+    // kaki kanan
+    cx.fillRect(x+s,y-ls,s,s*0.5);
+    cx.fillRect(x+s*1.5,y+ls,s,s*0.5);
+    cx.fillRect(x+s*0.7,y-ls*0.5,s*0.8,s*0.5);
+    // badan
+    cx.fillStyle=c.color;
+    cx.fillRect(x-s,y-s,s*2,s*1.2);
+    // capit
+    cx.fillRect(x-s*3,y-s*1.5,s,s*0.8);
+    cx.fillRect(x-s*3.2,y-s*1.8,s*0.6,s*0.5);
+    // mata
+    cx.fillStyle='#000';
+    cx.fillRect(x-s*0.5,y-s-P,P,P);
+    cx.fillRect(x+s*0.1,y-s-P,P,P);
+    cx.restore();
+    cx.globalAlpha=1;
+  }
+
+  /* ── Sparkle / partikel cahaya ── */
+  const SPARKLES=[];
+  for(let i=0;i<28;i++) SPARKLES.push({
+    x:Math.random(), y:Math.random()*0.75,
+    t:r(0,Math.PI*2), speed:r(0.018,0.04),
+    sz:r(0.8,2.0), bright:r(0.3,1.0)
+  });
+  function drawSparkles(W,H){
+    SPARKLES.forEach(sp=>{
+      sp.t+=sp.speed;
+      const alpha=Math.max(0,(Math.sin(sp.t)+1)/2)*sp.bright;
+      cx.globalAlpha=alpha*0.75;
+      const sx=sp.x*W, sy=sp.y*H, s=sp.sz*P;
+      cx.fillStyle='#ffffff';
+      cx.fillRect(sx,sy,s,s);
+      // cross sparkle
+      if(sp.sz>1.4){
+        cx.globalAlpha=alpha*0.4;
+        cx.fillRect(sx-s,sy+s*0.5,s*3,s*0.4);
+        cx.fillRect(sx+s*0.5,sy-s,s*0.4,s*3);
+      }
+    });
+    cx.globalAlpha=1;
+  }
+
+  /* Render */
+  function render(){
+    requestAnimationFrame(render);
+    const W=cv.width, H=cv.height;
+    if(!W||!H) return;
+    const g=cx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#00b4d8');
+    g.addColorStop(0.35,'#0096c7');
+    g.addColorStop(0.7,'#0077a8');
+    g.addColorStop(1,'#005f85');
+    cx.fillStyle=g; cx.fillRect(0,0,W,H);
+    drawRays(W,H);
+    drawSparkles(W,H);
+    drawBubs(W,H);
+    JELLIES.forEach(j=>drawJelly(j,W,H));
+    drawSeabed(W,H);
+    CRABS.forEach(c=>drawCrab(c,W,H));
+    FISH.forEach(f=>drawFish(f,W,H));
+    cx.globalAlpha=0.06; cx.fillStyle='#003050';
+    cx.fillRect(0,0,W,H); cx.globalAlpha=1;
+  }
+  render();
+})();
+
 
 /* TERMINAL */
 const termEl = document.getElementById('term');
